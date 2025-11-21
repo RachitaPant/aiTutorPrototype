@@ -52,7 +52,7 @@ export default function Page() {
   }, [room]);
 
   return (
-    <main data-lk-theme="default" className="h-full grid ">
+    <main data-lk-theme="default" className="h-full grid  bg-[var(--lk-bg)]">
       <RoomContext.Provider value={room}>
         <div className="  w-full h-full ">
           <SimpleVoiceAssistant onConnectButtonClicked={onConnectButtonClicked} />
@@ -83,7 +83,7 @@ function SimpleVoiceAssistant(props: { onConnectButtonClicked: () => void }) {
                 className="absolute inset-0 -z-10 -my-5"
                 style={{
                   background:
-                    "radial-gradient(circle at 50% 0%, rgba(180,180,255,0.60), transparent 70%)",
+                    "radial-gradient(circle at 50% 0%, rgba(180,180,255,0.80), transparent 40%)",
                 }}
               />
 
@@ -93,11 +93,11 @@ function SimpleVoiceAssistant(props: { onConnectButtonClicked: () => void }) {
                 transition={{ duration: 0.7 }}
                 className="space-y-6"
               >
-                <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 leading-tight">
+                <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-200 leading-tight">
                   Learn Design With Confidence
                 </h1>
 
-                <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+                <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
                   A voice-guided tutor built for creators. Explore color theory, typography, layout,
                   branding, UI/UX, and more — explained in a way that feels intuitive, visual, and
                   genuinely helpful.
@@ -155,7 +155,7 @@ function SimpleVoiceAssistant(props: { onConnectButtonClicked: () => void }) {
               >
                 <button
                   onClick={props.onConnectButtonClicked}
-                  className="group inline-flex items-center gap-3 px-10 py-4 rounded-full bg-black text-white text-lg font-semibold shadow-lg hover:shadow-xl transition-all hover:bg-gray-900"
+                  className="group inline-flex items-center gap-3 px-10 py-4 rounded-full bg-white text-black text-lg font-semibold shadow-lg hover:shadow-xl transition-all hover:bg-gray-900"
                 >
                   <span>Start Your Design Session</span>
                   <motion.span
@@ -168,7 +168,7 @@ function SimpleVoiceAssistant(props: { onConnectButtonClicked: () => void }) {
               </motion.div>
 
               {/* SUBJECT CHIPS */}
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.1 }}
@@ -189,59 +189,31 @@ function SimpleVoiceAssistant(props: { onConnectButtonClicked: () => void }) {
                     {subject}
                   </span>
                 ))}
-              </motion.div>
+              </motion.div> */}
             </div>
           </motion.div>
         ) : (
           /* CONNECTED */
-
           <motion.div
             key="connected"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-            className="flex flex-col h-full w-full bg-black"
+            transition={{ duration: 0.3, ease: [0.09, 1.04, 0.245, 1.055] }}
+            className="flex  items-center flex-col gap-4 h-full p-10"
           >
-            {/* Status Bar */}
-            {(agentState === "speaking" ||
-              agentState === "listening" ||
-              agentState === "thinking") && (
-              <div className="text-center py-3 bg-gray-50 border-b border-gray-200">
-                <p className="text-sm text-gray-600 font-medium">
-                  {agentState === "listening" && "Listening to you..."}
-                  {agentState === "thinking" && "Processing your input..."}
-                  {agentState === "speaking" && " Explaining..."}
-                </p>
-              </div>
-            )}
-
-            {/* Main Workspace */}
-            <div className="flex-1 overflow-y-auto py-10 px-6 flex flex-row items-center gap-10">
-              {/* Agent / Visualizer */}
-              <div className="w-full flex justify-center">
-                <AgentVisualizer />
-              </div>
-
-              {/* Transcript in a soft card */}
-              <div className="w-full max-w-2xl bg-gray-800 border border-gray-600 rounded-2xl p-6 shadow-sm">
+            <div className="flex flex-row space-x-10">
+              <AgentVisualizer />
+              <div className="flex-1 w-full border-[0.5px] border-gray-200/15 rounded-lg ">
                 <TranscriptionView />
-              </div>
-
-              {/* Flashcards + Quiz */}
-
-              <FlashCardContainer />
-
-              <QuizContainer />
-            </div>
-
-            {/* Control Bar */}
-            <div className="sticky bottom-0 bg-white border-t border-gray-200 py-4 backdrop-blur-lg">
-              <div className="flex justify-center">
-                <ControlBar onConnectButtonClicked={props.onConnectButtonClicked} />
+                <FlashCardContainer />
+                <QuizContainer />
               </div>
             </div>
 
+            <div className="w-full">
+              <ControlBar onConnectButtonClicked={props.onConnectButtonClicked} />
+            </div>
             <RoomAudioRenderer />
             <NoAgentNotification state={agentState} />
           </motion.div>
